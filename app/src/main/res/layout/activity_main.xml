@@ -1,178 +1,515 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="@color/bg"
+    android:orientation="vertical">
 
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/primary"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/statusText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#E8F0FE"
-            android:padding="12dp"
-            android:text="स्थिति: तैयार नहीं"
-            android:textSize="15sp" />
-
-        <!-- 1. Keyboard on -->
-        <TextView
-            style="@android:style/TextAppearance.Material.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="1) फ़ोन को कीबोर्ड बनाएँ" />
-
-        <Button
-            android:id="@+id/btnStartKeyboard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="कीबोर्ड चालू करें" />
-
-        <!-- 2. Pick device -->
-        <TextView
-            style="@android:style/TextAppearance.Material.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="2) PC / TV चुनें (पहले फ़ोन की Bluetooth सेटिंग में पेयर करें)" />
-
-        <Spinner
-            android:id="@+id/deviceSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnRefresh"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="सूची ताज़ा करें" />
-
-            <Button
-                android:id="@+id/btnConnect"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="जोड़ें" />
-        </LinearLayout>
-
-        <!-- 3. Excel / CSV forms -->
-        <TextView
-            style="@android:style/TextAppearance.Material.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="3) Excel / CSV से फ़ॉर्म चुनें (हर पंक्ति = एक फ़ॉर्म, हर कॉलम = एक फ़ील्ड)" />
-
-        <Button
-            android:id="@+id/btnImport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Excel / CSV फ़ाइल चुनें" />
-
-        <CheckBox
-            android:id="@+id/checkHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="पहली पंक्ति फ़ील्ड के नाम हैं (इसे टाइप नहीं करना)" />
-
-        <TextView
-            android:id="@+id/formInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="अभी कोई फ़ाइल नहीं चुनी" />
-
-        <Spinner
-            android:id="@+id/formSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- 4. Text and settings -->
-        <TextView
-            style="@android:style/TextAppearance.Material.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="4) जो टेक्स्ट टाइप कराना है (फ़ॉर्म चुनने पर यहाँ अपने-आप भर जाएगा)" />
-
-        <EditText
-            android:id="@+id/inputText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top"
-            android:hint="यहाँ टेक्स्ट लिखें"
-            android:inputType="textMultiLine"
-            android:minLines="4" />
-
-        <CheckBox
-            android:id="@+id/checkFormMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="फ़ॉर्म मोड: हर लाइन = एक फ़ील्ड (लाइनों के बीच Tab दबेगा)" />
-
-        <CheckBox
-            android:id="@+id/checkEnterAtEnd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="सबसे आख़िर में Enter भी दबाएँ (फ़ॉर्म सबमिट करने के लिए)" />
+        android:paddingStart="20dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="हर अक्षर के बीच देरी (ms)" />
-
-        <EditText
-            android:id="@+id/inputKeyDelay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="50" />
-
+            android:text="AutoType Keyboard"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="शुरू होने से पहले इंतज़ार (सेकंड), तब PC पर टेक्स्ट बॉक्स में क्लिक करें" />
-
-        <EditText
-            android:id="@+id/inputStartDelay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnStart"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ऑटो-टाइप शुरू" />
-
-            <Button
-                android:id="@+id/btnStop"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="रोकें" />
-        </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:text="Auto-type from your phone to a PC / TV"
+            android:textColor="#CCFFFFFF"
+            android:textSize="13sp" />
     </LinearLayout>
-</ScrollView>
+
+    <!-- Status -->
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/bg_status_info"
+        android:paddingStart="14dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="10dp"
+        android:text="First tap ‘Make phone a keyboard’"
+        android:textColor="@color/text_main"
+        android:textSize="14sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Card 1: connection -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/bg_badge"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Connection"
+                        android:textColor="@color/text_main"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnStartKeyboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/btn_secondary"
+                    android:stateListAnimator="@null"
+                    android:text="Make phone a keyboard"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Choose PC / TV"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pair it once in your phone’s Bluetooth settings first"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_input"
+                    android:padding="2dp">
+
+                    <Spinner
+                        android:id="@+id/deviceSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnRefresh"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_secondary"
+                        android:stateListAnimator="@null"
+                        android:text="Refresh list"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btnConnect"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_primary"
+                        android:stateListAnimator="@null"
+                        android:text="Connect"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Card 2: Excel / CSV -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/bg_badge"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Choose form (Excel / CSV)"
+                        android:textColor="@color/text_main"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Each row = one form, each column = one field. Optional: you can also type text directly below."
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btnImport"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/btn_secondary"
+                    android:stateListAnimator="@null"
+                    android:text="Choose Excel / CSV file"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/checkHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:checked="true"
+                    android:text="First row has field names (it won’t be typed)"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/formInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No file selected yet"
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_input"
+                    android:padding="2dp">
+
+                    <Spinner
+                        android:id="@+id/formSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Card 3: text and settings -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/bg_badge"
+                        android:gravity="center"
+                        android:text="3"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Text to type"
+                        android:textColor="@color/text_main"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="English / US keys only. Filled automatically when you pick a form."
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_input"
+                    android:gravity="top"
+                    android:hint="Type your text here"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:padding="12dp"
+                    android:textColor="@color/text_main"
+                    android:textSize="15sp" />
+
+                <CheckBox
+                    android:id="@+id/checkFormMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Form mode: each line is one field, Tab between lines"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/checkEnterAtEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Press Enter at the end (to submit)"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Wait before starting (seconds)"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meanwhile, click the box on your PC where text should go"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/inputStartDelay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_input"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:text="5"
+                    android:textColor="@color/text_main"
+                    android:textSize="15sp" />
+
+                <!-- Advanced (collapsed by default) -->
+                <TextView
+                    android:id="@+id/advancedToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="6dp"
+                    android:text="⚙ Advanced settings ▾"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/advancedContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Delay between keys (ms)"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/inputKeyDelay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/bg_input"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:padding="10dp"
+                            android:text="50"
+                            android:textColor="@color/text_main"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Repeat count (0 = nonstop)"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/inputRepeat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/bg_input"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:padding="10dp"
+                            android:text="1"
+                            android:textColor="@color/text_main"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Gap between repeats (seconds)"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/inputInterval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/bg_input"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:padding="10dp"
+                            android:text="5"
+                            android:textColor="@color/text_main"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom action bar: always visible -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="2"
+            android:background="@drawable/btn_primary"
+            android:stateListAnimator="@null"
+            android:text="▶  Start auto-type"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_danger"
+            android:stateListAnimator="@null"
+            android:text="■  Stop"
+            android:textAllCaps="false"
+            android:textColor="@color/danger_text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

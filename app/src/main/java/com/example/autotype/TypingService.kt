@@ -45,7 +45,7 @@ class TypingService : Service() {
         }
 
         // startForegroundService() requires startForeground() to be called promptly.
-        startForeground(NOTIFICATION_ID, buildNotification("टाइपिंग चल रही है…"))
+        startForeground(NOTIFICATION_ID, buildNotification("Typing in progress…"))
         if (intent == null || running) {
             if (!running) stopSelf()
             return START_NOT_STICKY
@@ -63,7 +63,7 @@ class TypingService : Service() {
         worker = Thread {
             runTyping(text, keyDelay, repeat, intervalSec, startDelaySec)
             running = false
-            statusCallback?.invoke("टाइपिंग पूरी / बंद")
+            statusCallback?.invoke("Typing done")
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
         }.also { it.start() }
@@ -73,23 +73,23 @@ class TypingService : Service() {
 
     private fun runTyping(text: String, keyDelay: Long, repeat: Int, intervalSec: Long, startDelaySec: Long) {
         // Give the user time to click into the target text field on the PC/TV.
-        if (!sleepSeconds(startDelaySec, "शुरू होने में")) return
+        if (!sleepSeconds(startDelaySec, "Starting in")) return
 
         var round = 0
         while (!cancelled && (repeat == 0 || round < repeat)) {
             round++
-            statusCallback?.invoke("टाइप हो रहा है… (बार $round)")
+            statusCallback?.invoke("Typing… (round $round)")
 
             for (c in text) {
                 if (cancelled) return
                 if (!HidManager.typeChar(c, keyDelay)) {
-                    statusCallback?.invoke("डिवाइस से कनेक्शन नहीं है, रुक गया")
+                    statusCallback?.invoke("Not connected to the device, typing stopped")
                     return
                 }
             }
 
             val moreToGo = repeat == 0 || round < repeat
-            if (moreToGo && !sleepSeconds(intervalSec, "अगली बार में")) return
+            if (moreToGo && !sleepSeconds(intervalSec, "Next round in")) return
         }
     }
 
@@ -98,7 +98,7 @@ class TypingService : Service() {
         var left = seconds
         while (left > 0) {
             if (cancelled) return false
-            statusCallback?.invoke("$label $left सेकंड…")
+            statusCallback?.invoke("$label $left s…")
             try {
                 Thread.sleep(1000)
             } catch (e: InterruptedException) {

@@ -17,11 +17,11 @@ object DataImporter {
             bytes[0] == 0xD0.toByte() && bytes[1] == 0xCF.toByte() &&
             bytes[2] == 0x11.toByte() && bytes[3] == 0xE0.toByte()
         ) {
-            throw IllegalArgumentException("यह पुरानी .xls फ़ाइल है। Excel में Save As करके .xlsx या CSV चुनें")
+            throw IllegalArgumentException("This is an old .xls file. In Excel use Save As and choose .xlsx or CSV")
         }
         val isZip = bytes.size >= 2 && bytes[0] == 0x50.toByte() && bytes[1] == 0x4B.toByte()
         val rows = if (isZip) parseXlsx(bytes) else parseCsv(String(bytes, Charsets.UTF_8))
-        if (rows.isEmpty()) throw IllegalArgumentException("फ़ाइल में कोई डेटा नहीं मिला")
+        if (rows.isEmpty()) throw IllegalArgumentException("No data found in the file")
         return rows
     }
 
@@ -100,7 +100,7 @@ object DataImporter {
         val sheetName = files.keys
             .filter { it.startsWith("xl/worksheets/") }
             .minByOrNull { it.removePrefix("xl/worksheets/sheet").removeSuffix(".xml").toIntOrNull() ?: Int.MAX_VALUE }
-            ?: throw IllegalArgumentException("xlsx में कोई शीट नहीं मिली")
+            ?: throw IllegalArgumentException("No sheet found in the xlsx file")
 
         val shared = files["xl/sharedStrings.xml"]?.let { parseSharedStrings(it) } ?: emptyList()
         return parseSheet(files.getValue(sheetName), shared)

@@ -89,6 +89,15 @@ class MainActivity : Activity() {
         }
         findViewById<Button>(R.id.btnImport).setOnClickListener { pickFile() }
 
+        // "Advanced settings" starts collapsed to keep the screen simple.
+        val advancedContainer = findViewById<View>(R.id.advancedContainer)
+        val advancedToggle = findViewById<TextView>(R.id.advancedToggle)
+        advancedToggle.setOnClickListener {
+            val show = advancedContainer.visibility != View.VISIBLE
+            advancedContainer.visibility = if (show) View.VISIBLE else View.GONE
+            advancedToggle.text = if (show) "⚙ Advanced settings ▴" else "⚙ Advanced settings ▾"
+        }
+
         ensurePermissions { refreshDevices() }
     }
 
@@ -110,16 +119,16 @@ class MainActivity : Activity() {
         Thread {
             try {
                 val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
-                    ?: throw IllegalStateException("फ़ाइल नहीं खुली")
+                    ?: throw IllegalStateException("Could not open the file")
                 val rows = DataImporter.parse(bytes)
                 runOnUiThread {
                     allRows = rows
                     saveRows()
                     rebuildForms()
-                    showStatus("फ़ाइल लोड हो गई: ${rows.size} पंक्तियाँ")
+                    showStatus("File loaded: ${rows.size} rows")
                 }
             } catch (e: Exception) {
-                showStatus("फ़ाइल पढ़ने में दिक्कत: ${e.message}")
+                showStatus("Problem reading file: ${e.message}")
             }
         }.start()
     }
@@ -135,11 +144,11 @@ class MainActivity : Activity() {
         formSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, labels)
 
         formInfo.text = if (allRows.isEmpty()) {
-            "अभी कोई फ़ाइल नहीं चुनी"
+            "No file selected yet"
         } else {
             val fieldCount = forms.maxOfOrNull { it.size } ?: 0
-            "कुल ${forms.size} फ़ॉर्म, हर फ़ॉर्म में ज़्यादा से ज़्यादा $fieldCount फ़ील्ड" +
-                (header?.let { "\nफ़ील्ड के नाम: " + it.joinToString(", ") } ?: "")
+            "${forms.size} forms, up to $fieldCount fields each" +
+                (header?.let { "\nField names: " + it.joinToString(", ") } ?: "")
         }
     }
 
@@ -154,7 +163,7 @@ class MainActivity : Activity() {
 
         val unsupported = fields.joinToString("").count { HidKeyMap.lookup(it) == null }
         if (unsupported > 0) {
-            showStatus("ध्यान दें: इस फ़ॉर्म में $unsupported अक्षर (हिंदी या ख़ास चिह्न) टाइप नहीं होंगे")
+            showStatus("Note: $unsupported characters in this form (non-English or special symbols) cannot be typed")
         }
     }
 
@@ -188,8 +197,20 @@ class MainActivity : Activity() {
         super.onDestroy()
     }
 
+    /** Shows the message and colours the banner: green = ok, amber = problem, blue = info. */
     private fun showStatus(message: String) {
-        runOnUiThread { statusText.text = "स्थिति: $message" }
+        runOnUiThread {
+            statusText.text = message
+            val m = message.lowercase()
+            val warnWords = listOf("not ", "could not", "problem", "lost", "stopped", " off", "note:", "no paired", "cannot", "failed")
+            val okWords = listOf("connected:", "ready", "loaded", "done")
+            val background = when {
+                warnWords.any { m.contains(it) } -> R.drawable.bg_status_warn
+                okWords.any { m.contains(it) } -> R.drawable.bg_status_ok
+                else -> R.drawable.bg_status_info
+            }
+            statusText.setBackgroundResource(background)
+        }
     }
 
     private fun refreshDevices() {
@@ -197,14 +218,14 @@ class MainActivity : Activity() {
         val names = devices.map { it.name ?: it.address }
         spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, names)
         if (devices.isEmpty()) {
-            showStatus("कोई पेयर डिवाइस नहीं मिला, पहले फ़ोन की Bluetooth सेटिंग में PC/TV से पेयर करें")
+            showStatus("No paired device found. First pair your PC/TV in the phone's Bluetooth settings")
         }
     }
 
     private fun connectSelected() {
         val index = spinner.selectedItemPosition
         if (index < 0 || index >= devices.size) {
-            Toast.makeText(this, "पहले कोई डिवाइस चुनें", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Choose a device first", Toast.LENGTH_SHORT).show()
             return
         }
         HidManager.connect(devices[index])
@@ -212,7 +233,7 @@ class MainActivity : Activity() {
 
     private fun startTyping() {
         if (!HidManager.isConnected) {
-            Toast.makeText(this, "पहले डिवाइस से जुड़ें", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Connect to a device first", Toast.LENGTH_SHORT).show()
             return
         }
         val raw = inputText.text.toString()
@@ -228,11 +249,11 @@ class MainActivity : Activity() {
             raw + (if (enterAtEnd) "\n" else "")
         }
         if (raw.isEmpty()) {
-            Toast.makeText(this, "टेक्स्ट खाली है", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Text is empty", Toast.LENGTH_SHORT).show()
             return
         }
         if (TypingService.running) {
-            Toast.makeText(this, "टाइपिंग पहले से चल रही है", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Typing is already running", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -289,7 +310,7 @@ class MainActivity : Activity() {
         if (btGranted) {
             pendingAction?.invoke()
         } else {
-            Toast.makeText(this, "Bluetooth की अनुमति ज़रूरी है", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Bluetooth permission is required", Toast.LENGTH_LONG).show()
         }
         pendingAction = null
     }

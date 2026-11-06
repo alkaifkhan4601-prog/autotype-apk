@@ -87,11 +87,11 @@ object HidManager {
     fun start(context: Context) {
         val adapter = adapter(context)
         if (adapter == null || !adapter.isEnabled) {
-            notify("Bluetooth बंद है, पहले इसे चालू करें")
+            notify("Bluetooth is off. Turn it on first")
             return
         }
         if (registered) {
-            notify("कीबोर्ड पहले से रजिस्टर है")
+            notify("Keyboard is already registered")
             return
         }
         adapter.getProfileProxy(context.applicationContext, object : BluetoothProfile.ServiceListener {
@@ -107,7 +107,7 @@ object HidManager {
                     DESCRIPTOR
                 )
                 val ok = device.registerApp(sdp, null, null, executor, callback)
-                if (!ok) notify("रजिस्टर नहीं हो पाया (शायद इस फ़ोन में HID सपोर्ट नहीं)")
+                if (!ok) notify("Could not register (this phone may not support HID)")
             }
 
             override fun onServiceDisconnected(profile: Int) {
@@ -115,7 +115,7 @@ object HidManager {
                     hid = null
                     host = null
                     registered = false
-                    notify("HID सेवा बंद हो गई")
+                    notify("HID service stopped")
                 }
             }
         }, BluetoothProfile.HID_DEVICE)
@@ -125,10 +125,10 @@ object HidManager {
     fun connect(device: BluetoothDevice) {
         val h = hid
         if (h == null || !registered) {
-            notify("पहले 'कीबोर्ड चालू करें' दबाएँ")
+            notify("First tap 'Make phone a keyboard'")
             return
         }
-        notify("${device.name ?: device.address} से जुड़ रहा है…")
+        notify("Connecting to ${device.name ?: device.address}…")
         h.connect(device)
     }
 
@@ -144,7 +144,7 @@ object HidManager {
     private val callback = object : BluetoothHidDevice.Callback() {
         override fun onAppStatusChanged(pluggedDevice: BluetoothDevice?, registeredNow: Boolean) {
             registered = registeredNow
-            notify(if (registeredNow) "कीबोर्ड तैयार है, अब डिवाइस चुनकर जोड़ें" else "कीबोर्ड रजिस्टर नहीं है")
+            notify(if (registeredNow) "Keyboard is ready. Now choose a device and tap Connect" else "Keyboard is not registered")
         }
 
         // The host (PC/TV) may ask for the current report. If we never answer,
@@ -167,11 +167,11 @@ object HidManager {
             when (state) {
                 BluetoothProfile.STATE_CONNECTED -> {
                     host = device
-                    notify("जुड़ गया: ${device.name ?: device.address}")
+                    notify("Connected: ${device.name ?: device.address}")
                 }
                 BluetoothProfile.STATE_DISCONNECTED -> {
                     if (host == device) host = null
-                    notify("कनेक्शन टूट गया")
+                    notify("Connection lost")
                 }
             }
         }

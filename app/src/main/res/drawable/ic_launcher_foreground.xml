@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keyboard glyph, kept inside the 66dp safe zone of the 108dp adaptive icon. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- keyboard body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,38 H78 A4,4 0 0 1 82,42 V66 A4,4 0 0 1 78,70 H30 A4,4 0 0 1 26,66 V42 A4,4 0 0 1 30,38 Z" />
+
+    <!-- top row of keys -->
+    <path
+        android:fillColor="#2B5BD7"
+        android:pathData="M33,44 h6 v5 h-6 z M42,44 h6 v5 h-6 z M51,44 h6 v5 h-6 z M60,44 h6 v5 h-6 z M69,44 h6 v5 h-6 z" />
+
+    <!-- middle row of keys -->
+    <path
+        android:fillColor="#2B5BD7"
+        android:pathData="M33,53 h6 v5 h-6 z M42,53 h6 v5 h-6 z M51,53 h6 v5 h-6 z M60,53 h6 v5 h-6 z M69,53 h6 v5 h-6 z" />
+
+    <!-- space bar -->
+    <path
+        android:fillColor="#2B5BD7"
+        android:pathData="M42,62 h24 v4 h-24 z" />
+</vector>
