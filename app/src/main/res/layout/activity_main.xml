@@ -140,31 +140,6 @@
             android:inputType="number"
             android:text="50" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="कितनी बार दोहराना है (0 = जब तक रोकें नहीं)" />
-
-        <EditText
-            android:id="@+id/inputRepeat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="दोहराने के बीच अंतराल (सेकंड)" />
-
-        <EditText
-            android:id="@+id/inputInterval"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="5" />
 
         <TextView
             android:layout_width="wrap_content"
