@@ -66,13 +66,45 @@
                 android:text="जोड़ें" />
         </LinearLayout>
 
-        <!-- 3. Text and settings -->
+        <!-- 3. Excel / CSV forms -->
         <TextView
             style="@android:style/TextAppearance.Material.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="3) जो टेक्स्ट टाइप कराना है (English/US कीज़)" />
+            android:text="3) Excel / CSV से फ़ॉर्म चुनें (हर पंक्ति = एक फ़ॉर्म, हर कॉलम = एक फ़ील्ड)" />
+
+        <Button
+            android:id="@+id/btnImport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Excel / CSV फ़ाइल चुनें" />
+
+        <CheckBox
+            android:id="@+id/checkHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="पहली पंक्ति फ़ील्ड के नाम हैं (इसे टाइप नहीं करना)" />
+
+        <TextView
+            android:id="@+id/formInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="अभी कोई फ़ाइल नहीं चुनी" />
+
+        <Spinner
+            android:id="@+id/formSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 4. Text and settings -->
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="4) जो टेक्स्ट टाइप कराना है (फ़ॉर्म चुनने पर यहाँ अपने-आप भर जाएगा)" />
 
         <EditText
             android:id="@+id/inputText"
@@ -82,6 +114,18 @@
             android:hint="यहाँ टेक्स्ट लिखें"
             android:inputType="textMultiLine"
             android:minLines="4" />
+
+        <CheckBox
+            android:id="@+id/checkFormMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="फ़ॉर्म मोड: हर लाइन = एक फ़ील्ड (लाइनों के बीच Tab दबेगा)" />
+
+        <CheckBox
+            android:id="@+id/checkEnterAtEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="सबसे आख़िर में Enter भी दबाएँ (फ़ॉर्म सबमिट करने के लिए)" />
 
         <TextView
             android:layout_width="wrap_content"
