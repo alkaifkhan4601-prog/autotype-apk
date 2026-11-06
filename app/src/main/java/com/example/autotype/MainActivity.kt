@@ -8,12 +8,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import org.json.JSONArray
 
 @SuppressLint("MissingPermission") // Checked via ensurePermissions() before every Bluetooth call.
 class MainActivity : Activity() {
@@ -26,8 +30,16 @@ class MainActivity : Activity() {
     private lateinit var inputInterval: EditText
     private lateinit var inputStartDelay: EditText
 
+    private lateinit var formSpinner: Spinner
+    private lateinit var formInfo: TextView
+    private lateinit var checkHeader: CheckBox
+
     private var devices: List<BluetoothDevice> = emptyList()
     private var pendingAction: (() -> Unit)? = null
+
+    // Imported table: allRows includes the header row (if any); forms is what the user picks from.
+    private var allRows: List<List<String>> = emptyList()
+    private var forms: List<List<String>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +70,116 @@ class MainActivity : Activity() {
         })
         TypingService.statusCallback = { showStatus(it) }
 
+        formSpinner = findViewById(R.id.formSpinner)
+        formInfo = findViewById(R.id.formInfo)
+        checkHeader = findViewById(R.id.checkHeader)
+
+        loadSavedRows()
+        rebuildForms()
+        checkHeader.setOnCheckedChangeListener { _, _ ->
+            saveRows()
+            rebuildForms()
+        }
+        formSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                fillFromForm(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        findViewById<Button>(R.id.btnImport).setOnClickListener { pickFile() }
+
         ensurePermissions { refreshDevices() }
+    }
+
+    // ---- Excel / CSV forms ----
+
+    private fun pickFile() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+        }
+        startActivityForResult(intent, 200)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != 200 || resultCode != RESULT_OK) return
+        val uri = data?.data ?: return
+        Thread {
+            try {
+                val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                    ?: throw IllegalStateException("फ़ाइल नहीं खुली")
+                val rows = DataImporter.parse(bytes)
+                runOnUiThread {
+                    allRows = rows
+                    saveRows()
+                    rebuildForms()
+                    showStatus("फ़ाइल लोड हो गई: ${rows.size} पंक्तियाँ")
+                }
+            } catch (e: Exception) {
+                showStatus("फ़ाइल पढ़ने में दिक्कत: ${e.message}")
+            }
+        }.start()
+    }
+
+    private fun rebuildForms() {
+        val hasHeader = checkHeader.isChecked && allRows.isNotEmpty()
+        val header = if (hasHeader) allRows[0] else null
+        forms = if (hasHeader) allRows.drop(1) else allRows
+
+        val labels = forms.mapIndexed { i, row ->
+            "${i + 1}) " + row.filter { it.isNotBlank() }.take(2).joinToString(" | ").take(40)
+        }
+        formSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, labels)
+
+        formInfo.text = if (allRows.isEmpty()) {
+            "अभी कोई फ़ाइल नहीं चुनी"
+        } else {
+            val fieldCount = forms.maxOfOrNull { it.size } ?: 0
+            "कुल ${forms.size} फ़ॉर्म, हर फ़ॉर्म में ज़्यादा से ज़्यादा $fieldCount फ़ील्ड" +
+                (header?.let { "\nफ़ील्ड के नाम: " + it.joinToString(", ") } ?: "")
+        }
+    }
+
+    /** Puts the chosen form's fields in the text box, one field per line, with form mode on. */
+    private fun fillFromForm(index: Int) {
+        if (index !in forms.indices) return
+        val fields = forms[index]
+            .map { it.replace("\r", " ").replace("\n", " ").trim() }
+            .dropLastWhile { it.isEmpty() }
+        inputText.setText(fields.joinToString("\n"))
+        findViewById<CheckBox>(R.id.checkFormMode).isChecked = true
+
+        val unsupported = fields.joinToString("").count { HidKeyMap.lookup(it) == null }
+        if (unsupported > 0) {
+            showStatus("ध्यान दें: इस फ़ॉर्म में $unsupported अक्षर (हिंदी या ख़ास चिह्न) टाइप नहीं होंगे")
+        }
+    }
+
+    private fun saveRows() {
+        val arr = JSONArray()
+        allRows.forEach { arr.put(JSONArray(it)) }
+        getSharedPreferences("forms", MODE_PRIVATE).edit()
+            .putString("rows", arr.toString())
+            .putBoolean("header", checkHeader.isChecked)
+            .apply()
+    }
+
+    private fun loadSavedRows() {
+        val prefs = getSharedPreferences("forms", MODE_PRIVATE)
+        checkHeader.isChecked = prefs.getBoolean("header", true)
+        val saved = prefs.getString("rows", null) ?: return
+        try {
+            val arr = JSONArray(saved)
+            allRows = (0 until arr.length()).map { i ->
+                val r = arr.getJSONArray(i)
+                (0 until r.length()).map { j -> r.getString(j) }
+            }
+        } catch (e: Exception) {
+            allRows = emptyList()
+        }
     }
 
     override fun onDestroy() {
@@ -94,8 +215,19 @@ class MainActivity : Activity() {
             Toast.makeText(this, "पहले डिवाइस से जुड़ें", Toast.LENGTH_SHORT).show()
             return
         }
-        val text = inputText.text.toString()
-        if (text.isEmpty()) {
+        val raw = inputText.text.toString()
+        val formMode = findViewById<CheckBox>(R.id.checkFormMode).isChecked
+        val enterAtEnd = findViewById<CheckBox>(R.id.checkEnterAtEnd).isChecked
+
+        // Form mode: each line is one field. Tab moves to the next field.
+        val text = if (formMode) {
+            raw.replace("\r", "")
+                .split("\n")
+                .joinToString("\t") + (if (enterAtEnd) "\n" else "")
+        } else {
+            raw + (if (enterAtEnd) "\n" else "")
+        }
+        if (raw.isEmpty()) {
             Toast.makeText(this, "टेक्स्ट खाली है", Toast.LENGTH_SHORT).show()
             return
         }
