@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E8F0FE"
+            android:padding="12dp"
+            android:text="स्थिति: तैयार नहीं"
+            android:textSize="15sp" />
+
+        <!-- 1. Keyboard on -->
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="1) फ़ोन को कीबोर्ड बनाएँ" />
+
+        <Button
+            android:id="@+id/btnStartKeyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="कीबोर्ड चालू करें" />
+
+        <!-- 2. Pick device -->
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="2) PC / TV चुनें (पहले फ़ोन की Bluetooth सेटिंग में पेयर करें)" />
+
+        <Spinner
+            android:id="@+id/deviceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRefresh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="सूची ताज़ा करें" />
+
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="जोड़ें" />
+        </LinearLayout>
+
+        <!-- 3. Text and settings -->
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="3) जो टेक्स्ट टाइप कराना है (English/US कीज़)" />
+
+        <EditText
+            android:id="@+id/inputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="यहाँ टेक्स्ट लिखें"
+            android:inputType="textMultiLine"
+            android:minLines="4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="हर अक्षर के बीच देरी (ms)" />
+
+        <EditText
+            android:id="@+id/inputKeyDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="कितनी बार दोहराना है (0 = जब तक रोकें नहीं)" />
+
+        <EditText
+            android:id="@+id/inputRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="दोहराने के बीच अंतराल (सेकंड)" />
+
+        <EditText
+            android:id="@+id/inputInterval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="शुरू होने से पहले इंतज़ार (सेकंड), तब PC पर टेक्स्ट बॉक्स में क्लिक करें" />
+
+        <EditText
+            android:id="@+id/inputStartDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ऑटो-टाइप शुरू" />
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="रोकें" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
