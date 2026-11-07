@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+    <!-- Always dark: the Material (dark) base also gives dark dropdowns, dialogs and light text. -->
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
         <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:colorAccent">@color/primary</item>
-        <!-- Same colour as the header so the top of the screen looks like one block -->
-        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/header_bg</item>
+        <item name="android:colorAccent">@color/accent_text</item>
+        <item name="android:statusBarColor">@color/header_bg</item>
         <item name="android:navigationBarColor">@color/card</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowBackground">@color/bg</item>
+        <item name="android:textColorHint">@color/text_muted</item>
     </style>
 </resources>

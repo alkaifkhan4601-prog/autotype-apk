@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Keyboard glyph, kept inside the 66dp safe zone of the 108dp adaptive icon. -->
+<!-- White-to-ice-blue "F" mark, kept inside the 66dp safe zone of the 108dp adaptive icon. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- keyboard body -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M30,38 H78 A4,4 0 0 1 82,42 V66 A4,4 0 0 1 78,70 H30 A4,4 0 0 1 26,66 V42 A4,4 0 0 1 30,38 Z" />
-
-    <!-- top row of keys -->
-    <path
-        android:fillColor="#2B5BD7"
-        android:pathData="M33,44 h6 v5 h-6 z M42,44 h6 v5 h-6 z M51,44 h6 v5 h-6 z M60,44 h6 v5 h-6 z M69,44 h6 v5 h-6 z" />
-
-    <!-- middle row of keys -->
-    <path
-        android:fillColor="#2B5BD7"
-        android:pathData="M33,53 h6 v5 h-6 z M42,53 h6 v5 h-6 z M51,53 h6 v5 h-6 z M60,53 h6 v5 h-6 z M69,53 h6 v5 h-6 z" />
-
-    <!-- space bar -->
-    <path
-        android:fillColor="#2B5BD7"
-        android:pathData="M42,62 h24 v4 h-24 z" />
+    <path android:pathData="M68.1,50.6 L51.2,50.7 L40.3,64.5 L31.8,64.7 L31.7,79.4 L40.2,79.1 L50.9,64.7 L68.1,64.7 Z M30.8,42.0 L77.1,42.4 L77.2,28.6 L41.8,28.6 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="28.6"
+                android:endX="54"
+                android:endY="79.4">
+                <item android:offset="0.0" android:color="#FFFFFFFF" />
+                <item android:offset="0.55" android:color="#FFE6F6FF" />
+                <item android:offset="1.0" android:color="#FF7FD3F5" />
+            </gradient>
+        </aapt:attr>
+    </path>
 </vector>

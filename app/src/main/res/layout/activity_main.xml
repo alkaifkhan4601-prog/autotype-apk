@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="@color/header_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="20dp"
@@ -17,13 +17,11 @@
         android:paddingEnd="20dp"
         android:paddingBottom="16dp">
 
-        <!-- Brand logo on a white tile (the logo is black, so it needs a light background) -->
+        <!-- Brand logo: the artwork is already a rounded tile, so no extra background is needed -->
         <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/bg_logo_tile"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:contentDescription="Logo"
-            android:padding="4dp"
             android:scaleType="fitCenter"
             android:src="@drawable/app_logo" />
 
@@ -126,7 +124,7 @@
                     android:stateListAnimator="@null"
                     android:text="Make phone a keyboard"
                     android:textAllCaps="false"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/accent_text"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -175,7 +173,7 @@
                         android:stateListAnimator="@null"
                         android:text="Refresh list"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
+                        android:textColor="@color/accent_text"
                         android:textSize="14sp" />
 
                     <Button
@@ -246,7 +244,7 @@
                     android:stateListAnimator="@null"
                     android:text="Choose Excel / CSV file"
                     android:textAllCaps="false"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/accent_text"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -393,7 +391,7 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:padding="6dp"
                     android:text="⚙ Advanced settings ▾"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/accent_text"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 

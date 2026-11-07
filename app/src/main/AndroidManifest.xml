@@ -24,7 +24,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label="Fill-X"
+        android:label="AutoType Keyboard"
         android:theme="@style/AppTheme">
 
         <activity
