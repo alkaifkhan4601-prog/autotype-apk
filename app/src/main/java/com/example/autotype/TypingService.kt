@@ -132,7 +132,7 @@ class TypingService : Service() {
             android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT
         )
         return Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle("AutoType Keyboard")
+            .setContentTitle("Fast Fill")
             .setContentText(text)
             .setSmallIcon(android.R.drawable.stat_sys_data_bluetooth)
             .setOngoing(true)
